@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ESFOCAR · Registro de Aseo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{--v:#1a4a2e;--vm:#2d6e47;--vc:#3d8f5f;--vl:#eaf4ee;--d:#c8a84b;--dc:#e8c96b;--dl:#fdf8ec;--cr:#f7f3eb;--bl:#ffffff;--gc:#e2ddd4;--gt:#999;--ro:#c0392b;--rol:#fdecea;--sh:0 2px 16px rgba(26,74,46,.10);}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);color:#2a2a2a;}
+.hdr{background:var(--v);position:sticky;top:0;z-index:300;box-shadow:0 2px 12px rgba(0,0,0,.25);}
+.hdr-top{display:flex;align-items:center;gap:12px;padding:12px 16px 10px;}
+.hdr-logo{width:44px;height:44px;background:var(--d);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.hdr-text h1{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2.5px;color:#fff;line-height:1.1;}
+.hdr-text p{font-size:10px;color:var(--dc);letter-spacing:2px;text-transform:uppercase;font-weight:600;}
+.hdr-sync{margin-left:auto;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border-radius:20px;padding:5px 11px;font-size:11px;color:rgba(255,255,255,.7);font-weight:600;cursor:pointer;border:none;flex-shrink:0;}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#5cd85a;flex-shrink:0;}
+.sync-dot.spin{background:var(--d);animation:pulse .8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.tabs{display:flex;border-top:1px solid rgba(255,255,255,.08);}
+.tab{flex:1;padding:9px 2px 8px;text-align:center;font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.45);cursor:pointer;border-bottom:3px solid transparent;transition:.15s;}
+.tab.on{color:var(--dc);border-bottom-color:var(--d);}
+.tab-ico{font-size:14px;display:block;margin-bottom:1px;}
+.pg{display:none;padding:14px 14px 80px;}
+.pg.on{display:block;}
+.card{background:var(--bl);border-radius:12px;box-shadow:var(--sh);margin-bottom:12px;overflow:hidden;}
+.card-hd{background:linear-gradient(135deg,var(--v),var(--vm));padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.card-hd h2{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1.5px;color:#fff;}
+.card-hd small{font-size:10px;color:var(--dc);}
+.card-bd{padding:13px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 15px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:.15s;}
+.btn:active{opacity:.7;}
+.btn-v{background:var(--v);color:#fff;}
+.btn-d{background:var(--d);color:var(--v);}
+.btn-r{background:var(--ro);color:#fff;}
+.btn-o{background:transparent;border:2px solid var(--v);color:var(--v);}
+.btn-sm{padding:5px 10px;font-size:11.5px;}
+.btn-w{width:100%;margin-bottom:8px;}
+.fg{margin-bottom:10px;}
+.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#999;margin-bottom:3px;}
+.fc{width:100%;padding:9px 12px;border:2px solid var(--gc);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#2a2a2a;background:#fff;-webkit-appearance:none;}
+.fc:focus{outline:none;border-color:var(--v);}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.stat{background:var(--bl);border-radius:10px;padding:10px 6px;text-align:center;box-shadow:var(--sh);}
+.stat .n{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--v);line-height:1;}
+.stat .l{font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:var(--gt);font-weight:700;}
+.dep-sep{display:flex;align-items:center;gap:8px;margin:18px 0 8px;}
+.dep-sep .dl{flex:1;height:1px;background:var(--vc);opacity:.3;}
+.dep-sep h3{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3.5px;color:var(--vm);white-space:nowrap;}
+.sc{background:var(--bl);border-radius:12px;box-shadow:var(--sh);margin-bottom:12px;overflow:hidden;}
+.sc-hdr{background:linear-gradient(135deg,var(--v),var(--vm));padding:11px 13px;display:flex;align-items:center;gap:9px;}
+.sc-num{width:30px;height:30px;background:var(--d);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--v);flex-shrink:0;}
+.sc-hdr h4{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;color:#fff;flex:1;}
+.sc-hdr small{font-size:9px;color:var(--dc);}
+.foto-area{width:100%;height:195px;background:linear-gradient(135deg,#dce8e0,#c4d4c8);position:relative;overflow:hidden;}
+.foto-area img{width:100%;height:100%;object-fit:cover;display:none;}
+.foto-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#6a9a72;pointer-events:none;}
+.foto-ph .fi{font-size:34px;opacity:.5;}
+.foto-ph .ft{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.6;}
+input.foto-inp{display:block;width:100%;padding:8px 13px;background:var(--dl);border:none;border-top:2px solid var(--d);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--v);cursor:pointer;}
+.sc-body{padding:12px;}
+.resp-chip{display:flex;align-items:center;gap:10px;background:var(--vl);border-radius:9px;padding:9px 11px;margin-bottom:8px;border:1px solid rgba(26,74,46,.1);}
+.resp-av{width:36px;height:36px;background:linear-gradient(135deg,var(--v),var(--vc));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.resp-info .rl{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--vc);font-weight:700;}
+.resp-info .rn{font-size:13px;font-weight:700;color:var(--v);}
+.resp-info .rs{font-size:11px;color:#888;}
+.pill{display:inline-flex;align-items:center;gap:4px;background:var(--vl);color:var(--v);border-radius:20px;padding:3px 9px;font-size:11.5px;font-weight:600;margin:2px;}
+.pill button{background:none;border:none;color:var(--ro);font-size:13px;cursor:pointer;padding:0 0 0 1px;line-height:1;}
+.sel{width:100%;padding:8px 11px;border:2px solid var(--gc);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:#333;background:#fff;-webkit-appearance:none;margin-bottom:5px;}
+.sel:focus{outline:none;border-color:var(--v);}
+.irow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--gc);}
+.irow:last-child{border-bottom:none;}
+.idot{width:8px;height:8px;border-radius:50%;background:var(--vc);flex-shrink:0;}
+.iinfo{flex:1;}
+.inom{font-weight:700;font-size:13px;color:var(--v);}
+.isub{font-size:11px;color:var(--gt);}
+.bg{display:inline-flex;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;}
+.bv{background:var(--vl);color:var(--v);}
+.ba{background:#d6eaf8;color:#1a6090;}
+.bd{background:var(--dl);color:#8a6a10;}
+.br{background:var(--rol);color:var(--ro);}
+.empty{text-align:center;padding:28px 14px;color:#ccc;}
+.empty .ei{font-size:32px;margin-bottom:5px;}
+.empty p{font-size:13px;}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;align-items:flex-end;justify-content:center;}
+.ov.on{display:flex;}
+.modal{background:var(--bl);border-radius:14px 14px 0 0;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;padding:16px 15px 32px;}
+.m-hdl{width:36px;height:4px;background:var(--gc);border-radius:4px;margin:0 auto 13px;}
+.modal h3{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1.5px;color:var(--v);margin-bottom:12px;}
+.m-foot{display:flex;gap:7px;margin-top:13px;}
+.m-foot .btn{flex:1;}
+.csv-prev{max-height:180px;overflow-y:auto;border:1px solid var(--gc);border-radius:8px;margin-top:8px;}
+.csv-prev table{width:100%;border-collapse:collapse;font-size:12px;}
+.csv-prev th{background:var(--v);color:#fff;padding:5px 8px;text-align:left;font-weight:700;position:sticky;top:0;}
+.csv-prev td{padding:5px 8px;border-bottom:1px solid var(--gc);}
+.csv-prev tr:last-child td{border-bottom:none;}
+.csv-prev tr:nth-child(even) td{background:#f8f6f2;}
+.csv-info{background:var(--dl);border:1px solid var(--d);border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.7;color:#555;margin-bottom:10px;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#1a1a1a;color:#fff;padding:9px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap;}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1;}
+.loading{position:fixed;inset:0;background:var(--v);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:14px;}
+.loading .logo{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:4px;color:var(--dc);}
+.loading p{font-size:12px;color:rgba(255,255,255,.6);letter-spacing:2px;text-transform:uppercase;}
+.spinner{width:36px;height:36px;border:3px solid rgba(200,168,75,.2);border-top-color:var(--d);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media print{.hdr,.btn,.ov,.toast,.loading,input.foto-inp,.sel{display:none!important;}.pg{display:block!important;padding:0;}.sc{page-break-inside:avoid;box-shadow:none;border:1px solid #ccc;margin-bottom:10px;}.sc-hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+</style>
+</head>
+<body>
+
+<div class="loading" id="loading">
+  <div class="logo">&#127963;&#65039; ESFOCAR</div>
+  <div class="spinner"></div>
+  <p>Cargando datos...</p>
+</div>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-logo">&#127963;&#65039;</div>
+    <div class="hdr-text">
+      <h1>ESFOCAR Concepción</h1>
+      <p>Registro de Aseo · 2026</p>
+    </div>
+    <button class="hdr-sync" onclick="sincronizar()">
+      <div class="sync-dot" id="sync-dot"></div>
+      <span id="sync-txt">Sincronizar</span>
+    </button>
+  </div>
+  <div class="tabs">
+    <div class="tab on" onclick="go('reg')" id="tab-reg"><span class="tab-ico">&#128203;</span>Registro</div>
+    <div class="tab" onclick="go('sec')" id="tab-sec"><span class="tab-ico">&#127970;</span>Sectores</div>
+    <div class="tab" onclick="go('alu')" id="tab-alu"><span class="tab-ico">&#128101;</span>Alumnos</div>
+  </div>
+</div>
+
+<div class="pg on" id="pg-reg">
+  <div class="stats">
+    <div class="stat"><div class="n" id="st-d">0</div><div class="l">Dependencias</div></div>
+    <div class="stat"><div class="n" id="st-s">0</div><div class="l">Sectores</div></div>
+    <div class="stat"><div class="n" id="st-a">0</div><div class="l">Alumnos</div></div>
+  </div>
+  <button class="btn btn-o btn-w btn-sm" onclick="window.print()">&#128424;&#65039; Imprimir / Exportar</button>
+  <div id="reg-wrap"></div>
+  <div class="empty" id="reg-empty"><div class="ei">&#128203;</div><p>Sin sectores.<br>Ve a Sectores para agregar.</p></div>
+</div>
+
+<div class="pg" id="pg-sec">
+  <div class="card">
+    <div class="card-hd"><div><h2>Nuevo Sector</h2><small>Con responsable directo</small></div></div>
+    <div class="card-bd">
+      <div class="fg"><label>Nombre del sector</label><input class="fc" id="sec-nom" placeholder="Ej: Pasillos Bloque A"></div>
+      <div class="fg"><label>Dependencia / Área</label><input class="fc" id="sec-dep" placeholder="Ej: Bloque Principal"></div>
+      <div class="fg"><label>Responsable del sector</label>
+        <select class="fc" id="sec-resp"><option value="">— Sin asignar responsable —</option></select></div>
+      <button class="btn btn-v btn-w" onclick="addSector()">&#10133; Agregar Sector</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hd"><div><h2>Sectores Registrados</h2><small id="sec-cnt">0</small></div></div>
+    <div class="card-bd" id="sec-lista"><div class="empty"><div class="ei">&#127970;</div><p>Sin sectores aún.</p></div></div>
+  </div>
+</div>
+
+<div class="pg" id="pg-alu">
+  <div class="card">
+    <div class="card-hd"><div><h2>Nuevo Alumno</h2><small>Individual o masivo</small></div></div>
+    <div class="card-bd">
+      <div class="fg"><label>Nombre completo</label><input class="fc" id="alu-nom" placeholder="Apellido Apellido, Nombre"></div>
+      <div class="fr">
+        <div class="fg"><label>Sección</label><input class="fc" id="alu-sec" placeholder="Ej: A"></div>
+        <div class="fg"><label>Escuadrón</label><input class="fc" id="alu-esc" placeholder="Ej: 1°"></div>
+      </div>
+      <button class="btn btn-v btn-w" onclick="addAlumno()">&#10133; Agregar Alumno</button>
+      <button class="btn btn-d btn-w" onclick="show('ov-csv')">&#128194; Carga Masiva CSV</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hd"><div><h2>Alumnos Registrados</h2><small id="alu-cnt">0</small></div></div>
+    <div class="card-bd" id="alu-lista"><div class="empty"><div class="ei">&#128101;</div><p>Sin alumnos aún.</p></div></div>
+  </div>
+</div>
+
+<div class="ov" id="ov-csv">
+  <div class="modal">
+    <div class="m-hdl"></div>
+    <h3>&#128194; Carga Masiva CSV</h3>
+    <div class="csv-info">
+      &#128204; <strong>Formato:</strong> columnas <code>nombre, seccion, escuadron</code><br>
+      Primera fila = encabezado (se ignora). Separador: coma <strong>,</strong> o punto y coma <strong>;</strong><br>
+      Ejemplo: <code>González Silva Juan,A,1°</code>
+    </div>
+    <button class="btn btn-d btn-sm" style="margin-bottom:10px;" onclick="descargarEjemplo()">&#11015;&#65039; Descargar CSV ejemplo</button>
+    <div class="fg"><label>Seleccionar archivo CSV</label>
+      <input type="file" id="csv-file" accept=".csv,.txt" class="fc" style="padding:7px;" onchange="leerCSV(this)"></div>
+    <div id="csv-preview"></div>
+    <div class="m-foot">
+      <button class="btn btn-o" onclick="hide('ov-csv')">Cancelar</button>
+      <button class="btn btn-v" id="btn-importar" onclick="importarCSV()" style="display:none;">&#9989; Importar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var API_KEY = "$2a$10$Ku7j1ms1NCs7c3fia/zrzOKa0G05uddfq5L6n4RRwxx2D.Y9zsCBq";
+var BIN_ID  = "69b2f8d5c3097a1dd51d42ba";
+var BASE    = "https://api.jsonbin.io/v3/b/";
+
+var D = { sectores:[], alumnos:[] };
+var _uid = Date.now();
+function uid(){ return (_uid++).toString(36); }
+var csvRows = [];
+var saveTimer = null;
+
+async function cargarDatos(){
+  try {
+    var res = await fetch(BASE + BIN_ID + "/latest", {
+      headers: {"X-Master-Key": API_KEY}
+    });
+    var json = await res.json();
+    if(json.record){
+      D.sectores = json.record.sectores || [];
+      D.alumnos  = json.record.alumnos  || [];
+      D.sectores.forEach(function(s){ if(s.responsable===undefined) s.responsable=null; });
+    }
+  } catch(e){ toast("⚠️ Sin conexión al servidor."); }
+}
+
+async function guardarDatos(){
+  setSyncing(true);
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async function(){
+    try {
+      await fetch(BASE + BIN_ID, {
+        method: "PUT",
+        headers: {"Content-Type":"application/json","X-Master-Key": API_KEY},
+        body: JSON.stringify(D)
+      });
+      setSyncing(false, "✓ Guardado");
+    } catch(e){ setSyncing(false, "⚠ Error"); }
+  }, 800);
+}
+
+function setSyncing(on, txt){
+  var dot=document.getElementById("sync-dot"), t=document.getElementById("sync-txt");
+  if(on){ dot.classList.add("spin"); if(t) t.textContent="Guardando..."; }
+  else  { dot.classList.remove("spin"); if(t&&txt) t.textContent=txt; }
+}
+
+async function sincronizar(){
+  setSyncing(true);
+  await cargarDatos();
+  setSyncing(false, "✓ Actualizado");
+  renderAll();
+  toast("🔄 Datos actualizados.");
+}
+
+function go(id){
+  document.querySelectorAll(".pg").forEach(function(p){ p.classList.remove("on"); });
+  document.querySelectorAll(".tab").forEach(function(t){ t.classList.remove("on"); });
+  document.getElementById("pg-"+id).classList.add("on");
+  document.getElementById("tab-"+id).classList.add("on");
+  if(id==="sec") actualizarSelectResp();
+  renderAll();
+}
+function show(id){ document.getElementById(id).classList.add("on"); }
+function hide(id){ document.getElementById(id).classList.remove("on"); }
+function toast(m){
+  var t=document.getElementById("toast");
+  t.textContent=m; t.classList.add("on");
+  setTimeout(function(){ t.classList.remove("on"); }, 2500);
+}
+
+function stats(){
+  document.getElementById("st-d").textContent=new Set(D.sectores.map(function(s){return s.dep;})).size;
+  document.getElementById("st-s").textContent=D.sectores.length;
+  document.getElementById("st-a").textContent=D.alumnos.length;
+}
+
+function addAlumno(){
+  var nom=document.getElementById("alu-nom").value.trim();
+  if(!nom){ toast("⚠️ Escribe el nombre."); return; }
+  D.alumnos.push({id:uid(), nombre:nom,
+    seccion:document.getElementById("alu-sec").value.trim(),
+    escuadron:document.getElementById("alu-esc").value.trim()});
+  document.getElementById("alu-nom").value="";
+  document.getElementById("alu-sec").value="";
+  document.getElementById("alu-esc").value="";
+  guardarDatos(); renderAll(); actualizarSelectResp();
+  toast("✅ Alumno guardado.");
+}
+
+function delAlumno(id){
+  if(!confirm("¿Eliminar alumno?")) return;
+  D.alumnos=D.alumnos.filter(function(a){ return a.id!==id; });
+  D.sectores.forEach(function(s){
+    s.asignados=s.asignados.filter(function(x){ return x!==id; });
+    if(s.responsable===id) s.responsable=null;
+  });
+  guardarDatos(); renderAll(); actualizarSelectResp();
+  toast("🗑️ Alumno eliminado.");
+}
+
+function renderAlu(){
+  var c=document.getElementById("alu-lista");
+  document.getElementById("alu-cnt").textContent=D.alumnos.length+" registrado"+(D.alumnos.length!==1?"s":"");
+  if(!D.alumnos.length){ c.innerHTML="<div class=\"empty\"><div class=\"ei\">👥</div><p>Sin alumnos aún.</p></div>"; return; }
+  c.innerHTML=D.alumnos.map(function(a){
+    var sec=a.seccion?"<span class=\"bg ba\">"+a.seccion+"</span> ":"";
+    var esc=a.escuadron?"<span class=\"bg bd\">"+a.escuadron+"</span>":"";
+    var jefe=D.sectores.filter(function(s){ return s.responsable===a.id; });
+    var jtag=jefe.length?"<div style=\"margin-top:3px;\"><span class=\"bg bv\">⭐ Resp: "+jefe.map(function(s){return s.nombre;}).join(", ")+"</span></div>":"";
+    return "<div class=\"irow\"><div class=\"idot\"></div>"
+      +"<div class=\"iinfo\"><div class=\"inom\">"+a.nombre+"</div>"
+      +"<div class=\"isub\">"+sec+esc+"</div>"+jtag+"</div>"
+      +"<button class=\"btn btn-r btn-sm\" onclick=\"delAlumno('"+a.id+"')\">✕</button></div>";
+  }).join("");
+}
+
+function descargarEjemplo(){
+  var csv="nombre,seccion,escuadron\nGonzalez Silva Juan,A,1\nPerez Munoz Carlos,A,1\nSoto Ramos Maria,B,2";
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download="ejemplo_alumnos.csv"; a.click();
+}
+
+function leerCSV(input){
+  var file=input.files[0]; if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var lines=e.target.result.split(/\r?\n/).filter(function(l){ return l.trim(); });
+    var sep=lines[0].includes(";")?";":",";
+    csvRows=[];
+    for(var i=1;i<lines.length;i++){
+      var cols=lines[i].split(sep).map(function(c){ return c.trim().replace(/^"|"$/g,""); });
+      if(cols[0]) csvRows.push({nombre:cols[0], seccion:cols[1]||"", escuadron:cols[2]||""});
+    }
+    var prev=document.getElementById("csv-preview"), btnImp=document.getElementById("btn-importar");
+    if(!csvRows.length){ prev.innerHTML="<p style=\"color:var(--ro);font-size:13px;margin-top:8px;\">⚠️ Sin datos válidos.</p>"; btnImp.style.display="none"; return; }
+    prev.innerHTML="<p style=\"font-size:13px;font-weight:700;color:var(--v);margin:8px 0 4px;\">✅ "+csvRows.length+" alumno(s) listos</p>"
+      +"<div class=\"csv-prev\"><table><thead><tr><th>Nombre</th><th>Secc.</th><th>Esc.</th></tr></thead><tbody>"
+      +csvRows.map(function(r){ return "<tr><td>"+r.nombre+"</td><td>"+r.seccion+"</td><td>"+r.escuadron+"</td></tr>"; }).join("")
+      +"</tbody></table></div>";
+    btnImp.style.display="inline-flex";
+  };
+  reader.readAsText(file,"UTF-8");
+}
+
+function importarCSV(){
+  if(!csvRows.length) return;
+  csvRows.forEach(function(r){ D.alumnos.push({id:uid(), nombre:r.nombre, seccion:r.seccion, escuadron:r.escuadron}); });
+  var n=csvRows.length; csvRows=[];
+  document.getElementById("csv-preview").innerHTML="";
+  document.getElementById("btn-importar").style.display="none";
+  document.getElementById("csv-file").value="";
+  hide("ov-csv");
+  guardarDatos(); renderAll(); actualizarSelectResp();
+  toast("✅ "+n+" alumnos importados.");
+}
+
+function actualizarSelectResp(){
+  var sel=document.getElementById("sec-resp"); if(!sel) return;
+  var cur=sel.value;
+  sel.innerHTML="<option value=\"\">— Sin asignar responsable —</option>"
+    +D.alumnos.map(function(a){
+      return "<option value=\""+a.id+"\">"+(cur===a.id?" selected":"")+a.nombre+(a.seccion?" ("+a.seccion+")":"")+"</option>";
+    }).join("");
+}
+
+function addSector(){
+  var nom=document.getElementById("sec-nom").value.trim();
+  if(!nom){ toast("⚠️ Escribe el nombre del sector."); return; }
+  var respId=document.getElementById("sec-resp").value||null;
+  D.sectores.push({id:uid(), nombre:nom,
+    dep:document.getElementById("sec-dep").value.trim()||"General",
+    responsable:respId, asignados:respId?[respId]:[], foto:null});
+  document.getElementById("sec-nom").value="";
+  document.getElementById("sec-dep").value="";
+  document.getElementById("sec-resp").value="";
+  guardarDatos(); renderAll();
+  toast("✅ Sector guardado.");
+}
+
+function delSector(id){
+  if(!confirm("¿Eliminar este sector?")) return;
+  D.sectores=D.sectores.filter(function(s){ return s.id!==id; });
+  guardarDatos(); renderAll();
+  toast("🗑️ Sector eliminado.");
+}
+
+function renderSec(){
+  var c=document.getElementById("sec-lista");
+  document.getElementById("sec-cnt").textContent=D.sectores.length+" registrado"+(D.sectores.length!==1?"s":"");
+  if(!D.sectores.length){ c.innerHTML="<div class=\"empty\"><div class=\"ei\">🏢</div><p>Sin sectores aún.</p></div>"; return; }
+  c.innerHTML=D.sectores.map(function(s){
+    var resp=s.responsable?D.alumnos.find(function(x){ return x.id===s.responsable; }):null;
+    return "<div class=\"irow\"><div class=\"idot\"></div>"
+      +"<div class=\"iinfo\"><div class=\"inom\">"+s.nombre+"</div>"
+      +"<div class=\"isub\">"+s.dep+(resp?" · <span class=\"bg bv\">⭐ "+resp.nombre+"</span>":"")
+      +" · <span class=\"bg "+(s.asignados.length?"bv":"br")+"\">"+s.asignados.length+" alu.</span></div></div>"
+      +"<button class=\"btn btn-r btn-sm\" onclick=\"delSector('"+s.id+"')\">✕</button></div>";
+  }).join("");
+}
+
+function cambiarResp(secId, selEl){
+  var s=D.sectores.find(function(x){ return x.id===secId; }); if(!s) return;
+  s.responsable=selEl.value||null;
+  if(s.responsable && s.asignados.indexOf(s.responsable)<0) s.asignados.push(s.responsable);
+  guardarDatos(); renderRespChip(secId); renderPills(secId); renderSec(); stats();
+}
+
+function renderRespChip(secId){
+  var el=document.getElementById("rchip-"+secId); if(!el) return;
+  var s=D.sectores.find(function(x){ return x.id===secId; }); if(!s) return;
+  var a=s.responsable?D.alumnos.find(function(x){ return x.id===s.responsable; }):null;
+  if(a){
+    el.style.display="flex";
+    el.innerHTML="<div class=\"resp-av\">⭐</div><div class=\"resp-info\"><div class=\"rl\">Responsable</div>"
+      +"<div class=\"rn\">"+a.nombre+"</div><div class=\"rs\">Sec."+(a.seccion||"—")+" · Esc."+(a.escuadron||"—")+"</div></div>";
+  } else { el.style.display="none"; }
+}
+
+function asignarAlu(secId, sel){
+  var aluId=sel.value; sel.value=""; if(!aluId) return;
+  var s=D.sectores.find(function(x){ return x.id===secId; });
+  if(!s||s.asignados.indexOf(aluId)>=0) return;
+  s.asignados.push(aluId);
+  guardarDatos(); renderPills(secId); renderSec(); stats();
+}
+
+function quitarAlu(secId, aluId){
+  var s=D.sectores.find(function(x){ return x.id===secId; }); if(!s) return;
+  if(s.responsable===aluId){ toast("⚠️ Es el responsable. Cámbialo primero."); return; }
+  s.asignados=s.asignados.filter(function(x){ return x!==aluId; });
+  guardarDatos(); renderPills(secId); renderSec(); stats();
+}
+
+function renderPills(secId){
+  var el=document.getElementById("pills-"+secId); if(!el) return;
+  var s=D.sectores.find(function(x){ return x.id===secId; });
+  if(!s||!s.asignados.length){ el.innerHTML="<span style=\"color:#ccc;font-size:12px;\">Sin alumnos</span>"; return; }
+  el.innerHTML=s.asignados.map(function(aid){
+    var a=D.alumnos.find(function(x){ return x.id===aid; }); if(!a) return "";
+    var er=s.responsable===aid;
+    return "<span class=\"pill\" style=\""+( er?"background:var(--dl);color:#8a6a10;":"")+"\">"+
+      (er?"⭐ ":"👮 ")+a.nombre+(!er?"<button onclick=\"quitarAlu('"+secId+"','"+aid+"')\">✕</button>":"")+
+      "</span>";
+  }).join("");
+}
+
+function cargarFoto(secId, input){
+  var file=input.files[0]; if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var image=new Image();
+    image.onload=function(){
+      var MAX=900, w=image.width, h=image.height;
+      if(w>MAX){ h=Math.round(h*MAX/w); w=MAX; }
+      var cv=document.createElement("canvas"); cv.width=w; cv.height=h;
+      cv.getContext("2d").drawImage(image,0,0,w,h);
+      var b64=cv.toDataURL("image/jpeg",.78);
+      var s=D.sectores.find(function(x){ return x.id===secId; });
+      if(s) s.foto=b64;
+      var img=document.getElementById("fimg-"+secId), ph=document.getElementById("fph-"+secId);
+      if(img){ img.src=b64; img.style.display="block"; }
+      if(ph) ph.style.display="none";
+      guardarDatos(); toast("📷 Foto guardada.");
+    };
+    image.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderReg(){
+  var wrap=document.getElementById("reg-wrap"), empty=document.getElementById("reg-empty");
+  wrap.innerHTML="";
+  if(!D.sectores.length){ empty.style.display=""; return; }
+  empty.style.display="none";
+  var deps={};
+  D.sectores.forEach(function(s){ if(!deps[s.dep]) deps[s.dep]=[]; deps[s.dep].push(s); });
+  var num=1;
+  Object.keys(deps).forEach(function(dep){
+    var sep=document.createElement("div"); sep.className="dep-sep";
+    sep.innerHTML="<div class=\"dl\"></div><h3>"+dep+"</h3><div class=\"dl\"></div>";
+    wrap.appendChild(sep);
+    deps[dep].forEach(function(s){
+      var n=num++, card=document.createElement("div"); card.className="sc";
+      card.innerHTML="<div class=\"sc-hdr\"><div class=\"sc-num\">"+n+"</div>"
+        +"<div style=\"flex:1;\"><h4>"+s.nombre+"</h4><small>"+s.dep+"</small></div>"
+        +"<span class=\"bg "+(s.asignados.length?"bv":"br")+"\">"+s.asignados.length+" alu.</span></div>";
+      var fa=document.createElement("div"); fa.className="foto-area";
+      var img=document.createElement("img"); img.id="fimg-"+s.id;
+      if(s.foto){ img.src=s.foto; img.style.display="block"; }
+      var ph=document.createElement("div"); ph.className="foto-ph"; ph.id="fph-"+s.id;
+      ph.style.display=s.foto?"none":"flex";
+      ph.innerHTML="<div class=\"fi\">📷</div><div class=\"ft\">Foto del sector</div>";
+      fa.appendChild(ph); fa.appendChild(img); card.appendChild(fa);
+      var finp=document.createElement("input"); finp.type="file"; finp.accept="image/*"; finp.className="foto-inp";
+      (function(sid){ finp.addEventListener("change",function(){ cargarFoto(sid,finp); }); })(s.id);
+      card.appendChild(finp);
+      var body=document.createElement("div"); body.className="sc-body";
+      var resp=s.responsable?D.alumnos.find(function(x){ return x.id===s.responsable; }):null;
+      var chip=document.createElement("div"); chip.className="resp-chip"; chip.id="rchip-"+s.id;
+      if(resp){
+        chip.innerHTML="<div class=\"resp-av\">⭐</div><div class=\"resp-info\"><div class=\"rl\">Responsable</div>"
+          +"<div class=\"rn\">"+resp.nombre+"</div><div class=\"rs\">Sec."+(resp.seccion||"—")+" · Esc."+(resp.escuadron||"—")+"</div></div>";
+      } else { chip.style.display="none"; }
+      body.appendChild(chip);
+      var rlbl=document.createElement("div");
+      rlbl.style.cssText="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#999;margin:6px 0 3px;";
+      rlbl.textContent="Responsable del Sector"; body.appendChild(rlbl);
+      var sr=document.createElement("select"); sr.className="sel";
+      var od=document.createElement("option"); od.value=""; od.textContent="— Sin responsable —"; sr.appendChild(od);
+      D.alumnos.forEach(function(a){
+        var opt=document.createElement("option"); opt.value=a.id;
+        opt.textContent=a.nombre+(a.seccion?" ("+a.seccion+")":"");
+        if(s.responsable===a.id) opt.selected=true;
+        sr.appendChild(opt);
+      });
+      (function(sid){ sr.addEventListener("change",function(){ cambiarResp(sid,sr); }); })(s.id);
+      body.appendChild(sr);
+      var sep2=document.createElement("div"); sep2.style.cssText="border-top:1px solid var(--gc);margin:10px 0 8px;";
+      body.appendChild(sep2);
+      var albl=document.createElement("div");
+      albl.style.cssText="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#999;margin-bottom:4px;";
+      albl.textContent="Alumnos Asignados"; body.appendChild(albl);
+      var sa=document.createElement("select"); sa.className="sel";
+      var oda=document.createElement("option"); oda.value=""; oda.textContent="＋ Agregar alumno..."; sa.appendChild(oda);
+      D.alumnos.filter(function(a){ return s.asignados.indexOf(a.id)<0; }).forEach(function(a){
+        var opt=document.createElement("option"); opt.value=a.id;
+        opt.textContent=a.nombre+(a.seccion?" ("+a.seccion+")":"");
+        sa.appendChild(opt);
+      });
+      (function(sid){ sa.addEventListener("change",function(){ asignarAlu(sid,sa); }); })(s.id);
+      body.appendChild(sa);
+      var pills=document.createElement("div"); pills.id="pills-"+s.id;
+      pills.style.cssText="display:flex;flex-wrap:wrap;gap:4px;min-height:22px;margin-top:4px;";
+      if(!s.asignados.length){ pills.innerHTML="<span style=\"color:#ccc;font-size:12px;\">Sin alumnos</span>"; }
+      else {
+        pills.innerHTML=s.asignados.map(function(aid){
+          var a=D.alumnos.find(function(x){ return x.id===aid; }); if(!a) return "";
+          var er=s.responsable===aid;
+          return "<span class=\"pill\" style=\""+( er?"background:var(--dl);color:#8a6a10;":"")+"\">"+
+            (er?"⭐ ":"👮 ")+a.nombre+(!er?"<button onclick=\"quitarAlu('"+s.id+"','"+aid+"')\">✕</button>":"")+
+            "</span>";
+        }).join("");
+      }
+      body.appendChild(pills);
+      card.appendChild(body);
+      wrap.appendChild(card);
+    });
+  });
+}
+
+function renderAll(){ stats(); renderReg(); renderSec(); renderAlu(); }
+
+(async function(){
+  await cargarDatos();
+  document.getElementById("loading").style.display="none";
+  actualizarSelectResp(); renderAll();
+  setInterval(function(){ cargarDatos().then(function(){ renderAll(); }); }, 30000);
+})();
+
+document.getElementById("alu-nom").addEventListener("keydown",function(e){ if(e.key==="Enter") addAlumno(); });
+document.getElementById("sec-nom").addEventListener("keydown",function(e){ if(e.key==="Enter") addSector(); });
+document.querySelectorAll(".ov").forEach(function(o){
+  o.addEventListener("click",function(e){ if(e.target===o) o.classList.remove("on"); });
+});
+</script>
+</body>
+</html>
