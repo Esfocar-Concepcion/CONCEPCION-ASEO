@@ -120,14 +120,14 @@ input.foto-inp{display:block;width:100%;padding:8px 13px;background:var(--dl);bo
 .pin-screen .logo{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:4px;color:var(--dc);}
 .pin-screen p{font-size:12px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;}
 .pin-dots{display:flex;gap:12px;margin:8px 0;}
-.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.4);background:transparent;transition:.15s;}
-.pin-dot.on{background:var(--d);border-color:var(--d);}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--gc);background:transparent;transition:.15s;}
+.pin-dot.on{background:var(--v);border-color:var(--v);}
 .pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:260px;}
-.pin-btn{background:rgba(255,255,255,.1);border:none;border-radius:12px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:26px;padding:16px;cursor:pointer;transition:.1s;}
-.pin-btn:active{background:var(--d);color:var(--v);}
-.pin-btn.del{font-size:18px;}
-.pin-btn.skip{background:rgba(255,255,255,.05);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;}
-.pin-err{color:#ff6b6b;font-size:13px;font-weight:700;min-height:18px;}
+.pin-btn{background:var(--vl);border:2px solid var(--gc);border-radius:12px;color:var(--v);font-family:'Bebas Neue',sans-serif;font-size:26px;padding:16px;cursor:pointer;transition:.1s;}
+.pin-btn:active{background:var(--v);color:#fff;}
+.pin-btn.del{font-size:18px;background:#fdecea;border-color:#f5c6c6;color:var(--ro);}
+.pin-btn.del:active{background:var(--ro);color:#fff;}
+.pin-err{color:var(--ro);font-size:13px;font-weight:700;min-height:20px;margin:6px 0;}
 /* Badge admin en header */
 .admin-badge{background:var(--d);color:var(--v);font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:.5px;}
 .lock-btn{margin-left:auto;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border-radius:20px;padding:5px 11px;font-size:11px;color:rgba(255,255,255,.7);font-weight:600;cursor:pointer;border:none;flex-shrink:0;}
